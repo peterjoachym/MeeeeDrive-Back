@@ -6,7 +6,7 @@ let config = {
   database: process.env.DB_NAME,
   port: process.env.DB_PORT,
   user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
+  password: process.env.DB_PASS,
   host: process.env.DB_HOST,
 };
 
@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === "test") {
     database: process.env.DB_NAME_TEST,
     port: process.env.DB_PORT_TEST,
     user: process.env.DB_USER_TEST,
-    password: process.env.DB_PASSWORD_TEST,
+    password: process.env.DB_PASS_TEST,
     host: process.env.DB_HOST_TEST,
   };
 }
