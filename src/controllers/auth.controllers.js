@@ -140,6 +140,7 @@ const deleteRefreshToken = (req, res) => {
 
 const verifyActivationToken = async (req, res, next) => {
   const { token } = req.params;
+  console.log(token);
   if (token) {
     jwt.verify(token, process.env.JWT_ACTIVATION, (err, decoded) => {
       if (!err) {

@@ -1,9 +1,14 @@
 const usersRouter = require("express").Router();
-const { usersControllers, globalControllers} = require("../controllers");
+const { usersControllers, globalControllers,folderControllers,fileControllers} = require("../controllers");
 
 usersRouter.get("/", usersControllers.getMany);
 
 usersRouter.get("/:id", globalControllers.verifyInputId, usersControllers.verifyIfIdExist, usersControllers.getOneById);
+
+usersRouter.get("/:id/folders", folderControllers.getFoldersByUserId);
+usersRouter.get("/:id/files", fileControllers.getFilesByUserId);
+
+
 
 // usersRouter.get("/:id/avatars", globalController.verifyInputId, userController.verifyIfIdExist, pictureController.getAvatarByUserId);
 
