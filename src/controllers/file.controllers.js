@@ -1,4 +1,43 @@
+const multer = require("multer");
+const fs = require("fs");
 const { File } = require("../models");
+
+const uploadDocumentFile = (req, res, next) => {
+  const storage = multer.diskStorage({
+    destination: (_req, _file, cb) => {
+      cb(null, "public/drive_files");
+    },
+    filename: (_, file, cb) => {
+      cb(null, `${Date.now()}-${file.originalname}`);
+    },
+  });
+  const upload = multer({ storage }).single("documentFile");
+
+  upload(req, res, (err) => {
+    if (err) {
+      res.status(500).json(err);
+    } else {
+      req.document = JSON.parse(req.body.documentData);
+      next();
+    }
+  });
+};
+
+const deleteDocumentFile = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const [results] = await File.findOneById(id);
+    fs.unlink(`public/drive_files/${results[0].file_name}`, (err) => {
+      if (err) throw err;
+    });
+    next();
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+
+
+
 
 const getFilesByUserId = async (req, res) => {
   const { id } = req.params;
@@ -38,12 +77,13 @@ const getOneFileById = async (req, res) => {
 const createFile = async (req, res, next) => {
   const { file_name, file_display_name, folder_id, user_id } = req.body;
   try {
-    await Folder.createOneFolder({
+    const [results] = await Folder.createOneFolder({
       file_name,
       file_display_name,
       folder_id,
       user_id,
     });
+    req.id = results.insertId;
     next();
   } catch (err) {
     res.status(500).send(err.message);
@@ -96,4 +136,6 @@ module.exports = {
     createFile,
     updateOneById,
     deleteOneById,
+    uploadDocumentFile,
+    deleteDocumentFile,
 };

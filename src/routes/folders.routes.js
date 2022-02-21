@@ -3,7 +3,7 @@ const { folderControllers,fileControllers } = require("../controllers");
 
 foldersRouter.get("/:id", folderControllers.getOneFolderById);
 foldersRouter.get("/:id/files", fileControllers.getFilesByFolderId);
-foldersRouter.post("/", folderControllers.createFolder);
+foldersRouter.post("/", folderControllers.createFolder,folderControllers.getOneFolderById);
 foldersRouter.put("/:id", folderControllers.updateOneById);
 foldersRouter.delete("/:id", folderControllers.deleteOneById)
 

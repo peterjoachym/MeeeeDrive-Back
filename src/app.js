@@ -20,6 +20,8 @@ app.use(express.json());
 
 app.use(cookieParser());
 
+app.use("/drive_files", express.static("public/drive_files"));
+
 app.get("/", (req, res) => {
   res
     .status(200)

@@ -25,8 +25,10 @@ const getOneFolderById = async (req, res) => {
 
 const createFolder = async (req, res, next) => {
   const { folder_name, folder_parent_id, user_id } = req.body;
+  console.log("ici");
   try {
-    await Folder.createOneFolder({ folder_name, folder_parent_id, user_id });
+    const [results]=await Folder.createOneFolder({ folder_name, folder_parent_id, user_id });
+    req.id = results.insertId;
     next();
   } catch (err) {
     res.status(500).send(err.message);
@@ -44,7 +46,7 @@ const updateOneById = async (req, res) => {
     if (folder_name) {
       user.folder_name = folder_name;
     }
-    if (folder_perent_id) {
+    if (folder_parent_id) {
       user.folder_parent_id = folder_parent_id;
     }
     if (user_id) {

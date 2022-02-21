@@ -7,7 +7,7 @@ class Folder {
   }
 
   static findOneById(id) {
-    const sql = "SELECT * FROM user WHERE id=?";
+    const sql = "SELECT * FROM folder WHERE id=?";
     return connection.promise().query(sql, [id]);
   }
 
