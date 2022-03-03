@@ -24,10 +24,9 @@ const getOneFolderById = async (req, res) => {
 };
 
 const createFolder = async (req, res, next) => {
-  const { folder_name, folder_parent_id, user_id } = req.body;
-  console.log("ici");
+  const { folder_name, folder_parent_id, user_id, is_in_the_bin } = req.body;
   try {
-    const [results]=await Folder.createOneFolder({ folder_name, folder_parent_id, user_id });
+    const [results]=await Folder.createOneFolder({ folder_name, folder_parent_id, user_id, is_in_the_bin });
     req.id = results.insertId;
     next();
   } catch (err) {
@@ -36,10 +35,10 @@ const createFolder = async (req, res, next) => {
 };
 
 const updateOneById = async (req, res) => {
-  const { folder_name, folder_parent_id, user_id } = req.body;
+  const { folder_name, folder_parent_id, user_id, is_in_the_bin } = req.body;
   const { id } = req.params;
 
-  if (!folder_name&& !folder_parent_id && !user_id ) {
+  if (!folder_name&& !folder_parent_id && !user_id && !is_in_the_bin ) {
     res.status(400).send("You need to give all mandatory datas!");
   } else {
     const folder = {};
@@ -51,6 +50,9 @@ const updateOneById = async (req, res) => {
     }
     if (user_id) {
       user.user_id = user_id;
+    }
+    if (is_in_the_bin) {
+      user.is_in_the_bin = is_in_the_bin;
     }
     try {
       await Folder.updateOneById(folder, id);

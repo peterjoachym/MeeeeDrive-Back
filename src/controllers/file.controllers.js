@@ -75,13 +75,14 @@ const getOneFileById = async (req, res) => {
 };
 
 const createFile = async (req, res, next) => {
-  const { file_name, file_display_name, folder_id, user_id } = req.body;
+  const { file_name, file_display_name, folder_id, user_id,is_in_the_bin } = req.body;
   try {
     const [results] = await Folder.createOneFolder({
       file_name,
       file_display_name,
       folder_id,
       user_id,
+      is_in_the_bin,
     });
     req.id = results.insertId;
     next();
@@ -91,10 +92,9 @@ const createFile = async (req, res, next) => {
 };
 
 const updateOneById = async (req, res) => {
-  const { file_name, file_display_name, folder_id, user_id } = req.body;
+  const { file_name, file_display_name, folder_id, user_id, is_in_the_bin } = req.body;
   const { id } = req.params;
-
-  if (!file_name && !file_display_name && !folder_id && !user_id) {
+  if (!file_name && !file_display_name && !folder_id && !user_id && !is_in_the_bin) {
     res.status(400).send("You need to give all mandatory datas!");
   } else {
     const file = {};
@@ -109,6 +109,9 @@ const updateOneById = async (req, res) => {
     }
     if (user_id) {
       user.user_id = user_id;
+    }
+    if (is_in_the_bin) {
+      user.is_in_the_bin = is_in_the_bin;
     }
     try {
       await Folder.updateOneById(file, id);
